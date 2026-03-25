@@ -1,0 +1,111 @@
+const CONFIG = {
+  LINE_ACCESS_TOKEN: "/j9YBKvqUU1pIS7muRTrYXMDPl1lmb9RRF1TjfScraUUWi9p04Es8KY1/4XJ1UCvW0N4XJVCWBFtFElpgtcsID94EDSnUGLfAMeVmZmXZO5BqqP/oy7r7ajbPSsXl6/Vhy+ruRk3a+/0bEudZ3V1rwdB04t89/1O/w1cDnyilFU=",
+
+  PDF_URL: "https://shusaku-cmyk.github.io/shouronlabo-brochure/",
+
+  REPLY_TEXT: "友だち登録ありがとうございます。\n"
+            + "小論文専門予備校「小論ラボ」です。\n\n"
+            + "お問い合わせの際はメッセージをお送りください。\n"
+            + "メッセージには「お名前」、「志望校」、「相談内容」を添えていただければ幸いです。",
+
+  FLEX_TITLE: "📄 小論ラボのご案内",
+  FLEX_DESCRIPTION: "指導方針・合格実績・受講料についてご覧いただけます",
+  FLEX_BUTTON_LABEL: "詳細を見る",
+
+  COLOR_PRIMARY: "#2563EB",
+  COLOR_BG: "#F0F5FF",
+  COLOR_TEXT: "#1E3A5F",
+};
+
+function doPost(e) {
+  try {
+    var events = JSON.parse(e.postData.contents).events;
+    for (var i = 0; i < events.length; i++) {
+      if (events[i].type === "follow") {
+        replyWithFlexAndText(events[i].replyToken);
+      }
+    }
+  } catch (err) {
+    Logger.log("doPost エラー: " + err.message);
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "ok" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function replyWithFlexAndText(replyToken) {
+  var messages = [
+    {
+      type: "text",
+      text: CONFIG.REPLY_TEXT,
+    },
+    {
+      type: "flex",
+      altText: CONFIG.FLEX_TITLE + " - " + CONFIG.FLEX_DESCRIPTION,
+      contents: {
+        type: "bubble",
+        size: "kilo",
+        body: {
+          type: "box",
+          layout: "vertical",
+          spacing: "md",
+          paddingAll: "20px",
+          backgroundColor: CONFIG.COLOR_BG,
+          contents: [
+            {
+              type: "text",
+              text: CONFIG.FLEX_TITLE,
+              weight: "bold",
+              size: "lg",
+              color: CONFIG.COLOR_TEXT,
+            },
+            {
+              type: "text",
+              text: CONFIG.FLEX_DESCRIPTION,
+              size: "sm",
+              color: "#666666",
+              wrap: true,
+            },
+          ],
+        },
+        footer: {
+          type: "box",
+          layout: "vertical",
+          spacing: "sm",
+          paddingAll: "12px",
+          contents: [
+            {
+              type: "button",
+              style: "primary",
+              color: CONFIG.COLOR_PRIMARY,
+              action: {
+                type: "uri",
+                label: CONFIG.FLEX_BUTTON_LABEL,
+                uri: CONFIG.PDF_URL,
+              },
+            },
+          ],
+        },
+      },
+    },
+  ];
+
+  UrlFetchApp.fetch("https://api.line.me/v2/bot/message/reply", {
+    method: "post",
+    contentType: "application/json",
+    headers: { Authorization: "Bearer " + CONFIG.LINE_ACCESS_TOKEN },
+    payload: JSON.stringify({ replyToken: replyToken, messages: messages }),
+    muteHttpExceptions: true,
+  });
+}
+
+function authorizationTest() {
+  UrlFetchApp.fetch("https://api.line.me/v2/bot/info", {
+    method: "get",
+    headers: {
+      Authorization: "Bearer " + CONFIG.LINE_ACCESS_TOKEN,
+    },
+    muteHttpExceptions: true,
+  });
+  Logger.log("権限承認OK");
+}
