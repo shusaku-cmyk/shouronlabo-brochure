@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小論ラボ — 資料請求用資料</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue-deep:  #0a3d6b;
+  --blue-mid:   #1565c0;
+  --blue-clear: #1e88e5;
+  --blue-light: #bbdefb;
+  --blue-pale:  #f4f8fd;
+  --ink:        #1a2535;
+  --ink-mid:    #3d4f63;
+  --ink-light:  #7a8fa6;
+  --rule:       #c8d9ec;
+  --white:      #ffffff;
+  --max-w:      760px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Serif JP', serif;
+  color: var(--ink);
+  background: #eef3f9;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ─── LAYOUT WRAPPER ─── */
+.site-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  background: var(--white);
+  box-shadow: 0 4px 32px rgba(10,61,107,0.10);
+}
+
+/* ─── STICKY NAV ─── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--blue-deep);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 52px;
+}
+.nav-brand {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover {
+  background: rgba(255,255,255,0.12);
+  color: var(--white);
+}
+
+/* ─── HERO / COVER ─── */
+.hero {
+  padding: 52px 40px 44px;
+  background: var(--white);
+  border-bottom: 1px solid var(--rule);
+}
+.hero-label {
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--blue-clear);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-size: clamp(36px, 8vw, 52px);
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.hero-subtitle {
+  font-size: 13px;
+  color: var(--ink-mid);
+  letter-spacing: 0.04em;
+  margin-bottom: 22px;
+}
+.hero-rule {
+  width: 48px;
+  height: 3px;
+  background: var(--blue-clear);
+  margin-bottom: 22px;
+}
+.hero-tagline {
+  font-size: clamp(16px, 3.5vw, 20px);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.hero-tagline em {
+  font-style: normal;
+  color: var(--blue-mid);
+  font-weight: 700;
+}
+
+/* Hero dark box */
+.hero-box {
+  background: var(--blue-deep);
+  padding: 22px 24px;
+  margin-bottom: 24px;
+}
+.hero-box-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 14px;
+}
+.hero-box-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.hero-box-list li {
+  font-size: 13px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.hero-box-list li::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--blue-clear);
+  flex-shrink: 0;
+}
+
+/* Key points */
+.key-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.key-point {
+  background: var(--blue-pale);
+  border-top: 2px solid var(--blue-clear);
+  padding: 14px 14px;
+}
+.key-point-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--blue-clear);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.key-point-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* ─── SECTION ─── */
+.section {
+  padding: 44px 40px;
+  border-bottom: 1px solid var(--rule);
+}
+.section:last-child { border-bottom: none; }
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--blue-clear);
+}
+.section-num {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--blue-clear);
+  font-weight: 500;
+}
+.section-title {
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: 0.04em;
+}
+.section-en {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+/* ─── OVERVIEW ─── */
+.overview-lead {
+  background: var(--blue-pale);
+  border-left: 3px solid var(--blue-clear);
+  padding: 18px 22px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ink);
+  margin-bottom: 18px;
+  text-align: justify;
+}
+.overview-lead strong { color: var(--blue-mid); }
+
+.body-text {
+  font-size: 13.5px;
+  color: var(--ink-mid);
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* ─── POLICY ─── */
+.policy-item {
+  display: flex;
+  gap: 18px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.policy-item:last-child { border-bottom: none; }
+.policy-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue-light);
+  line-height: 1;
+  min-width: 36px;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.policy-content h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: 7px;
+  letter-spacing: 0.02em;
+}
+.policy-content p {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.85;
+  text-align: justify;
+}
+.policy-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+.tag {
+  font-size: 10px;
+  color: var(--blue-mid);
+  border: 1px solid var(--blue-clear);
+  padding: 2px 10px;
+  letter-spacing: 0.03em;
+}
+
+/* ─── RESULTS ─── */
+.result-year-block { margin-bottom: 18px; }
+.result-year {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--blue-clear);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.result-year::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 20px;
+}
+.result-item {
+  font-size: 13px;
+  color: var(--ink-mid);
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.result-univ {
+  font-weight: 600;
+  color: var(--ink);
+}
+.result-dept {
+  font-size: 11px;
+  color: var(--ink-light);
+}
+.result-note {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--ink-light);
+  background: var(--blue-pale);
+  padding: 10px 14px;
+}
+
+/* ─── PRICE ─── */
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+}
+.price-table thead tr {
+  background: var(--blue-deep);
+  color: var(--white);
+}
+.price-table thead th {
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+.price-table tbody tr { border-bottom: 1px solid var(--rule); }
+.price-table tbody tr:nth-child(even) { background: var(--blue-pale); }
+.price-table tbody td {
+  padding: 14px 16px;
+  font-size: 13px;
+  vertical-align: top;
+}
+.course-name {
+  font-weight: 700;
+  color: var(--blue-deep);
+  font-size: 13.5px;
+  margin-bottom: 3px;
+}
+.course-desc {
+  font-size: 11px;
+  color: var(--ink-light);
+}
+.price-val {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--blue-mid);
+  white-space: nowrap;
+}
+.price-sub {
+  font-size: 11px;
+  color: var(--ink-light);
+  margin-top: 2px;
+}
+.price-pair {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.price-note {
+  font-size: 11px;
+  color: var(--ink-light);
+  line-height: 1.75;
+  padding: 12px 16px;
+  background: var(--blue-pale);
+  border-left: 2px solid var(--rule);
+}
+
+/* ─── FOOTER ─── */
+.site-footer {
+  background: var(--blue-deep);
+  padding: 28px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.footer-brand {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.06em;
+}
+.footer-info {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  text-align: right;
+  line-height: 1.7;
+}
+.footer-info a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+}
+.footer-info a:hover { color: var(--white); }
+
+/* ─── RESPONSIVE: TABLET ─── */
+@media (max-width: 640px) {
+  .nav { padding: 0 16px; }
+  .nav-links a { font-size: 10px; padding: 5px 7px; }
+
+  .hero { padding: 36px 20px 32px; }
+  .hero-box { padding: 18px 16px; }
+  .hero-box-list { gap: 7px 14px; }
+  .hero-box-list li { font-size: 12px; }
+
+  .key-points { grid-template-columns: 1fr; gap: 8px; }
+
+  .section { padding: 32px 20px; }
+  .section-en { display: none; }
+
+  .policy-item { gap: 12px; }
+  .policy-num { font-size: 22px; min-width: 28px; }
+
+  .result-grid { grid-template-columns: 1fr; gap: 5px; }
+
+  /* Price table → card layout on mobile */
+  .price-table, .price-table thead, .price-table tbody,
+  .price-table th, .price-table td, .price-table tr {
+    display: block;
+  }
+  .price-table thead { display: none; }
+  .price-table tbody tr {
+    background: var(--white) !important;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 14px 16px;
+  }
+  .price-table tbody td { padding: 4px 0; border: none; }
+
+  .site-footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+  .footer-info { text-align: left; }
+}
+
+/* ─── RESPONSIVE: SMALL PHONE ─── */
+@media (max-width: 380px) {
+  .nav-links { gap: 0; }
+  .nav-links a { font-size: 9px; padding: 5px 5px; }
+  .hero-title { font-size: 32px; }
+  .hero-box-list li { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<div class="site-wrap">
+
+  <!-- ─── NAV ─── -->
+  <nav class="nav">
+    <a class="nav-brand" href="#">小論ラボ</a>
+    <ul class="nav-links">
+      <li><a href="#overview">概要</a></li>
+      <li><a href="#policy">指導方針</a></li>
+      <li><a href="#results">合格実績</a></li>
+      <li><a href="#price">受講料</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-label">資料請求用資料</div>
+    <div class="hero-title">小論ラボ</div>
+    <div class="hero-subtitle">Shōron Labo — 小論文・推薦入試 専門個別指導塾</div>
+    <div class="hero-rule"></div>
+    <div class="hero-tagline">
+      思考と表現を磨き、<br>
+      <em>あなたの考えを伝える力</em>を育成。
+    </div>
+
+    <div class="hero-box">
+      <div class="hero-box-label">対応入試・科目</div>
+      <ul class="hero-box-list">
+        <li>学校推薦型選抜</li>
+        <li>総合型選抜（AO）</li>
+        <li>一般選抜（国公立二次）</li>
+        <li>医学部入試</li>
+        <li>志望理由書</li>
+        <li>面接対策</li>
+        <li>英検・国語</li>
+      </ul>
+    </div>
+
+    <div class="key-points">
+      <div class="key-point">
+        <div class="key-point-label">指導形式</div>
+        <div class="key-point-value">1:1 完全個別指導</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-label">指導実績</div>
+        <div class="key-point-value">延べ 200名以上</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-label">所在地</div>
+        <div class="key-point-value">新宿（オンライン可）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 01 OVERVIEW ─── -->
+  <section class="section" id="overview">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">小論ラボの概要</span>
+      <span class="section-en">Overview</span>
+    </div>
+
+    <div class="overview-lead">
+      小論ラボは、大学入試における<strong>「小論文・志望理由書・面接」をトータルサポート</strong>する完全個別指導塾です。学校推薦型選抜・総合型選抜・一般入試・医学部入試まで幅広く対応し、大学や社会で必要となる<strong>「自らの考えをまとめ、人に伝える力」</strong>を養うことを目標としています。
+    </div>
+
+    <p class="body-text">
+      近年の大学入試では、学力試験だけでなく小論文などの「考える科目」が必須となる試験が増加しています。これは「思考力・判断力・表現力」を持って進学してほしいという大学からのメッセージです。しかし、集団指導がメインの高校や大手予備校では、これらの力を養うことが難しいと感じる受験生も多くいます。小論ラボでは<strong>完全個別指導</strong>にこだわり、「書く・添削」だけでなく<strong>「ディスカッション」</strong>を通して考えをまとめる力を養い、志望校合格へと導きます。
+    </p>
+  </section>
+
+  <!-- ─── 02 POLICY ─── -->
+  <section class="section" id="policy">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">指導方針</span>
+      <span class="section-en">Teaching Policy</span>
+    </div>
+
+    <div class="policy-item">
+      <div class="policy-num">01</div>
+      <div class="policy-content">
+        <h3>小論文を含む大学入試をトータルサポート</h3>
+        <p>小論文が科目に含まれる入試に重点を置き、志望理由書・面接・英検・国語など合格に必要な要素をすべて一人の講師が指導します。学校推薦型・総合型選抜は評価基準がわかりにくく情報も少ないため、蓄積した過去の入試データを活用しながら対策を進めます。医学部の小論文・面接対策も専門予備校での経験をもとに実施します。</p>
+        <div class="policy-tags">
+          <span class="tag">学校推薦型選抜</span>
+          <span class="tag">総合型選抜</span>
+          <span class="tag">国公立二次</span>
+          <span class="tag">医学部</span>
+          <span class="tag">英検・国語</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-item">
+      <div class="policy-num">02</div>
+      <div class="policy-content">
+        <h3>1:1 完全個別指導 ＋ ディスカッション</h3>
+        <p>すべての指導は「1:1の完全個別指導」で行います。添削後にリライトを実施してブラッシュアップするのはもちろん、授業前に事前添削を行い万全の準備で臨みます。さらに、その回で学習した事項を完全に理解するまで議論する「ディスカッション」を取り入れ、大学が求める「思考力・判断力・表現力」を養います。</p>
+        <div class="policy-tags">
+          <span class="tag">事前添削</span>
+          <span class="tag">リライト</span>
+          <span class="tag">ディスカッション</span>
+          <span class="tag">完全理解</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-item">
+      <div class="policy-num">03</div>
+      <div class="policy-content">
+        <h3>プロ予備校講師による直接指導</h3>
+        <p>主宰「菊池秀策」が全指導を担当します。河合塾・四谷学院・早稲田予備校など大手予備校での指導経験と、延べ200名以上の指導実績、多数の著書（KADOKAWA・Gakken・かんき出版）を持つプロ講師が、社会人経験も活かして志望理由書・面接対策における「将来設計」まで手厚くサポートします。</p>
+        <div class="policy-tags">
+          <span class="tag">延べ200名以上の指導実績</span>
+          <span class="tag">著書多数</span>
+          <span class="tag">社会人経験</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 03 RESULTS ─── -->
+  <section class="section" id="results">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">合格実績</span>
+      <span class="section-en">Track Record</span>
+    </div>
+
+    <div class="result-year-block">
+      <div class="result-year">2024年度</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="result-univ">京都工芸繊維大学</span></div>
+        <div class="result-item"><span class="result-univ">上智大学</span>&nbsp;<span class="result-dept">商学部</span></div>
+        <div class="result-item"><span class="result-univ">中央大学</span>&nbsp;<span class="result-dept">文学部</span></div>
+        <div class="result-item"><span class="result-univ">日本大学</span>&nbsp;<span class="result-dept">藝術学部</span></div>
+        <div class="result-item"><span class="result-univ">大妻女子大学</span>&nbsp;<span class="result-dept">家政学部</span></div>
+      </div>
+    </div>
+
+    <div class="result-year-block">
+      <div class="result-year">2023年度</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="result-univ">大阪大学</span>&nbsp;<span class="result-dept">外国語学部</span></div>
+        <div class="result-item"><span class="result-univ">早稲田大学</span>&nbsp;<span class="result-dept">文学部</span></div>
+        <div class="result-item"><span class="result-univ">早稲田大学</span>&nbsp;<span class="result-dept">教育学部</span></div>
+        <div class="result-item"><span class="result-univ">早稲田大学</span>&nbsp;<span class="result-dept">スポーツ科学部</span></div>
+        <div class="result-item"><span class="result-univ">上智大学</span>&nbsp;<span class="result-dept">総合グローバル学部</span></div>
+        <div class="result-item"><span class="result-univ">立教大学</span>&nbsp;<span class="result-dept">社会学部</span></div>
+        <div class="result-item"><span class="result-univ">明治大学</span>&nbsp;<span class="result-dept">文学部</span></div>
+        <div class="result-item"><span class="result-univ">立命館大学</span>&nbsp;<span class="result-dept">経営学部</span></div>
+      </div>
+    </div>
+
+    <div class="result-year-block">
+      <div class="result-year">2022年度</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="result-univ">慶應義塾大学</span>&nbsp;<span class="result-dept">経済学部</span></div>
+        <div class="result-item"><span class="result-univ">奈良教育大学</span>&nbsp;<span class="result-dept">教育学部</span></div>
+        <div class="result-item"><span class="result-univ">同志社大学</span>&nbsp;<span class="result-dept">経済学部</span></div>
+        <div class="result-item"><span class="result-univ">立命館アジア太平洋大学</span>&nbsp;<span class="result-dept">アジア太平洋学部</span></div>
+      </div>
+    </div>
+
+    <div class="result-year-block">
+      <div class="result-year">2021年度 以前（抜粋）</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="result-univ">慶應義塾大学</span>&nbsp;<span class="result-dept">総合政策・環境情報学部</span></div>
+        <div class="result-item"><span class="result-univ">早稲田大学</span>&nbsp;<span class="result-dept">法学部</span></div>
+        <div class="result-item"><span class="result-univ">大阪大学</span>&nbsp;<span class="result-dept">外国語学部</span></div>
+        <div class="result-item"><span class="result-univ">九州大学</span>&nbsp;<span class="result-dept">共創学部</span></div>
+        <div class="result-item"><span class="result-univ">岩手医科大学</span>&nbsp;<span class="result-dept">医学部</span></div>
+        <div class="result-item"><span class="result-univ">神戸大学</span>&nbsp;<span class="result-dept">医学部 医学科</span></div>
+        <div class="result-item"><span class="result-univ">広島大学</span>&nbsp;<span class="result-dept">総合科学部</span></div>
+        <div class="result-item"><span class="result-univ">和歌山県立医科大学</span>&nbsp;<span class="result-dept">看護医療学部</span></div>
+      </div>
+    </div>
+
+    <div class="result-note">
+      ※ 2015年度より指導実績あり。掲載は一部抜粋です。
+    </div>
+  </section>
+
+  <!-- ─── 04 PRICE ─── -->
+  <section class="section" id="price">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">受講料</span>
+      <span class="section-en">Tuition Fees</span>
+    </div>
+
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:46%;">コース</th>
+          <th>受講料（税込）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="course-name">入塾金</div>
+            <div class="course-desc">初月のみ（兄弟2人目以降は不要）</div>
+          </td>
+          <td>
+            <div class="price-val">30,000円</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="course-name">小論文・総合問題対策コース</div>
+            <div class="course-desc">難関大志望・入試まで2ヶ月以上の受験生対象</div>
+          </td>
+          <td>
+            <div class="price-val">98,000円</div>
+            <div class="price-sub">月4回（各60分）／ 1コマ追加 22,500円</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="course-name">推薦入試準備コース</div>
+            <div class="course-desc">推薦・総合型選抜志望・入試まで2ヶ月以上の受験生対象</div>
+          </td>
+          <td>
+            <div class="price-pair">
+              <div>
+                <div class="price-val">85,600円</div>
+                <div class="price-sub">受験生：月4回（各60分）</div>
+              </div>
+              <div>
+                <div class="price-val" style="font-size:15px;">39,500円</div>
+                <div class="price-sub">受験生以外：月2回（各60分）</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="course-name">入試直前対策コース</div>
+            <div class="course-desc">入試まで2ヶ月以下の受験生対象</div>
+          </td>
+          <td>
+            <div class="price-pair">
+              <div>
+                <div class="price-val">115,800円</div>
+                <div class="price-sub">全4回指導（各60分）</div>
+              </div>
+              <div>
+                <div class="price-val" style="font-size:15px;">216,500円</div>
+                <div class="price-sub">全8回指導（各60分）</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="price-note">
+      ※ 長期的な指導による「論理的思考の構築」を目標としているため、短期的な指導では指導料が高く設定されています。<br>
+      ※ 上記コースにマッチしない受験生には、カスタマイズした指導プランをご提案することも可能です。<br>
+      ※ キャンペーン割引・紹介割引などで金額が変動する場合があります。
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="site-footer">
+    <div class="footer-brand">小論ラボ</div>
+    <div class="footer-info">
+      <a href="https://www.shouronlabo.com/" target="_blank" rel="noopener">https://www.shouronlabo.com/</a><br>
+      TEL: 03-6258-1525<br>
+      本資料は資料請求用です。掲載内容は変更される場合があります。
+    </div>
+  </footer>
+
+</div><!-- /.site-wrap -->
+
+</body>
+</html>
